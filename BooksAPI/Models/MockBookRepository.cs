@@ -2,10 +2,13 @@ namespace BooksAPI.Models;
 
 public class MockBookRepository : IBookRepository
 {
+    private readonly ILogger<MockBookRepository> _logger;
     private List<Book> _bookList;
 
-    public MockBookRepository()
+    public MockBookRepository(ILogger<MockBookRepository> logger)
     {
+        _logger = logger;
+
         _bookList = new List<Book>() 
         {
             new Book() { Id = 1, Name = "Peter Pan" },
@@ -41,9 +44,9 @@ public class MockBookRepository : IBookRepository
                             Name = b.Name}).First();
     }
 
-    public List<Book> GetBooks(string name)
+    public List<Book> GetAllBooks()
     {
-        return _bookList.Where(b => b.Name.Contains(name)).ToList();
+        return _bookList;
     }
 
     private int lastBookId()
@@ -52,10 +55,8 @@ public class MockBookRepository : IBookRepository
         int lastId = 0;
 
         if (lastBookEntered != null)
-        {
-            lastId += lastBookEntered.Id;
-        }
+            lastId = lastBookEntered.Id;
 
-        return lastId;
+        return ++lastId;
     }
 }
