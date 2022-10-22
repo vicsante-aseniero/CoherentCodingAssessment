@@ -2,8 +2,8 @@ namespace BooksAPI.Models;
 
 public interface IBookRepository
 {
-    Book AddBook(string name);
-    Book GetBook(string name);
-    List<Book> AddBooks(string[] names);
-    List<Book> GetAllBooks();
+    public Book AddBook(string name);
+    public Book GetBook(string name);
+    public List<Book> AddBooks(string[] names);
+    public List<Book> GetAllBooks();
 }
