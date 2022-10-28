@@ -1,62 +1,67 @@
-namespace BooksAPI.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-public class MockBookRepository : IBookRepository
+namespace BooksAPI.Models
 {
-    private readonly ILogger<MockBookRepository> _logger;
-    private List<Book> _bookList;
-
-    public MockBookRepository(ILogger<MockBookRepository> logger)
+    public class MockBookRepository : IBookRepository
     {
-        _logger = logger;
+        private readonly ILogger<MockBookRepository> _logger;
+        private List<Book> _bookList;
 
-        _bookList = new List<Book>() 
+        public MockBookRepository(ILogger<MockBookRepository> logger)
         {
-            new Book() { Id = 1, Name = "Peter Pan" },
-            new Book() { Id = 2, Name = "Moby Dick" },
-            new Book() { Id = 3, Name = "To Kill a Mockingbird" }
-        };
-    }
+            _logger = logger;
 
-    public Book AddBook(string name)
-    {
-        Book newBook = new Book() { Id = lastBookId(), Name = name };
-        _bookList.Add(newBook);
-
-        return newBook;
-    }
-
-    public List<Book> AddBooks(string[] names)
-    {
-        foreach(string name in names)
-        {
-            Book newBook = new Book() { Id = lastBookId(), Name = name };
-            _bookList.Add(newBook);            
+            _bookList = new List<Book>() 
+            {
+                new Book() { Id = 1, Name = "Peter Pan" },
+                new Book() { Id = 2, Name = "Moby Dick" },
+                new Book() { Id = 3, Name = "To Kill a Mockingbird" }
+            };
         }
 
-        return _bookList;
-    }
+        public Book AddBook(string name)
+        {
+            Book newBook = new Book() { Id = lastBookId(), Name = name };
+            _bookList.Add(newBook);
 
-    public Book GetBook(string name)
-    {
-        return _bookList.Where(b => b.Name == name)
-                        .Select(b => new Book {
-                            Id = b.Id,
-                            Name = b.Name}).First();
-    }
+            return newBook;
+        }
 
-    public List<Book> GetAllBooks()
-    {
-        return _bookList;
-    }
+        public List<Book> AddBooks(string[] names)
+        {
+            foreach(string name in names)
+            {
+                Book newBook = new Book() { Id = lastBookId(), Name = name };
+                _bookList.Add(newBook);            
+            }
 
-    private int lastBookId()
-    {
-        var lastBookEntered = _bookList.LastOrDefault();
-        int lastId = 0;
+            return _bookList;
+        }
 
-        if (lastBookEntered != null)
-            lastId = lastBookEntered.Id;
+        public Book GetBook(string name)
+        {
+            return _bookList.Where(b => b.Name == name)
+                            .Select(b => new Book {
+                                Id = b.Id,
+                                Name = b.Name}).First();
+        }
 
-        return ++lastId;
+        public List<Book> GetAllBooks()
+        {
+            return _bookList;
+        }
+
+        private int lastBookId()
+        {
+            var lastBookEntered = _bookList.LastOrDefault();
+            int lastId = 0;
+
+            if (lastBookEntered != null)
+                lastId = lastBookEntered.Id;
+
+            return ++lastId;
+        }
     }
 }
